@@ -1,0 +1,53 @@
+<table class='table'>
+  <tr>
+    <td><%= link_to(book.user) do %>
+      <%= image_tag book.user.get_profile_image(50,50)%><br>
+      <%= user.name %>
+
+    </td>
+    <td><%= link_to book.title, book %></td>
+    <td><%= book.body %></td>
+
+
+
+    <td id="favorite_buttons_<%= book.id %>">
+    <%= render "favorites/favorite", book: book %>
+    </td>
+
+
+
+    <% end %>
+
+    <td><p>コメント件数：<%= book.book_comments.count %></p></td>
+
+    <% if book.user == current_user %>
+      <td><%= link_to 'Edit', edit_book_path(book), class: "btn btn-sm btn-success" %></td>
+      <td><%= link_to 'Destroy', book_path(book), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%></td>
+    <% end %>
+  </tr>
+</table>
+
+<% book.book_comments.each do |book_comment| %>
+<div>
+<%= image_tag book_comment.user.get_profile_image(50,50) %>
+
+<%= book_comment.comment %>
+
+<% if book_comment.user == current_user %>
+  <%= link_to 'Destroy', book_book_comment_path(book, book_comment.id), method: :delete, remote: true, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%>
+<% end %>
+<p><%= book_comment.user.name %></p>
+</div>
+<% end %>
+
+<div>
+  <%= form_with model:[book,book_comment],local:false do |f| %>
+    <div class="form-group">
+      <%= f.label :comment %>
+      <%= f.text_area :comment, class: 'form-control'%>
+    </div>
+    <div class="form-group">
+      <%= f.submit '送信'%>
+    </div>
+  <% end %>
+</div>

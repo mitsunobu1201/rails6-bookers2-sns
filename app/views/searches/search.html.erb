@@ -1,0 +1,46 @@
+<table class="table table-hover table-inverse">
+
+
+  <h2><%= params[:range] %> search for "<%= params[:word] %>"</h2>
+   <tbody>
+  <!--検索対象モデルがUserの時 -->
+  <% if @range == "User" %>
+
+      <% @users.each do |user| %>
+        <thead>
+        <tr>
+          <th></th>
+          <th>User</th>
+          <th>introduction</th>
+        </tr>
+        </thead>
+        <tr>
+        <td><%= image_tag user.get_profile_image(50,50) %></td>
+        <td><%= link_to user.name,user_path(user.id) %></td>
+        <td><%= user.introduction %></td>
+        </tr>
+      <% end %>
+
+  <% else %>
+    <!--検索対象モデルがUserではない時(= 検索対象モデルがBookの時) -->
+    <tbody>
+      <% @books.each do |book| %>
+        <thead>
+        <tr>
+          <th></th>
+          <th>User Name</th>
+          <th>Book</th>
+          <th>opinion</th>
+        </tr>
+        </thead>
+        <tr>
+        <td><%= image_tag User.find(book.user.id).get_profile_image(50,50) %></td>
+        <td><%= link_to User.find(book.user.id).name,user_path(book.user.id)%></td>
+        <td><%= book.title %></td>
+        <td><%= book.body %></td>
+
+        </tr>
+      <% end %>
+  <% end %>
+  </tbody>
+</table>

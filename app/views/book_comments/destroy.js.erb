@@ -1,0 +1,1 @@
+$('#book_comment_buttons_<%= @comment.id %>').html("<%= j(render "book_comments/book_comments", {book: @comment,book_comment: @book_comment,user: @user}) %>");
