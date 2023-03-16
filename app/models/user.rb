@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :books, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many :book_comments, dependent: :destroy
-  
+
   #フォロー、フォロワー
   has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
   has_many :reverse_of_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
@@ -18,7 +18,7 @@ class User < ApplicationRecord
   has_one_attached :profile_image
 
   validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: true
-  validates :introduction ,length: {maximum: 50}, uniqueness: true
+  validates :introduction ,length: {maximum: 50}, uniqueness: false
 
 
   def get_profile_image(width,height)
@@ -28,8 +28,8 @@ class User < ApplicationRecord
       end
       profile_image.variant(resize_to_limit: [width, height]).processed
   end
-  
-  
+
+
   # フォロー機能
   # フォローしたときの処理
   def follow(user_id)
@@ -43,8 +43,8 @@ class User < ApplicationRecord
   def following?(user)
       followings.include?(user)
   end
-  
-  
+
+
   #検索機能
   # 検索方法分岐
   def self.looks(search, word)
@@ -61,5 +61,5 @@ class User < ApplicationRecord
     end
   end
 
-  
+
 end
