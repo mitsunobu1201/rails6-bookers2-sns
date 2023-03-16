@@ -17,11 +17,27 @@
 	  <th><%= link_to user.followers.count, user_followers_path(user) %></th>
   </tr>
 </table>
+<div>
+          <% if !(current_user == user) %>
 
-<% if current_user == user %>
-<div class='row'>
-  <%= link_to edit_user_path(user), class: "btn btn-outline-secondary btn-block" do %>
-    <i class="fas fa-user-cog"></i>
-  <% end %>
-  </div>
-  <% end %>
+          <% if current_user.following?(user) %>
+          <%= link_to "フォロー外す", user_relationships_path(user), class: "btn btn-info",method: :delete %>
+          <% if current_user.following?(user) && user.following?(current_user) %>
+          <%= link_to "Chatを始める", user_chat_path(user) %>
+          <% end %>
+          <% else %>
+          <%= link_to "フォローする", user_relationships_path(user), class: "btn btn-success",method: :post %>
+          <% end %>
+
+          <% end %>
+</div>
+<br>
+<div>
+        <% if current_user %>
+        <div class='row'>
+        <%= link_to edit_user_path(user), class: "btn btn-outline-secondary btn-block" do %>
+        <i class="fas fa-user-cog"></i>
+        <% end %>
+        </div>
+        <% end %>
+</div>
